@@ -1,7 +1,10 @@
 package by.epam.hackathon.timewarp.ui
 
+import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
-import android.content.Context
+import android.animation.ValueAnimator
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
@@ -9,11 +12,14 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.*
 import by.epam.hackathon.timewarp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,10 +40,32 @@ class MainActivity : AppCompatActivity() {
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
         container.adapter = mSectionsPagerAdapter
 
+        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), this.resources.getColor(R.color.clock_background), 0xFFFFFF)
+        container.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                //Log.i("t-race", "position: $position, offset: $positionOffset, offsetPx: $positionOffsetPixels")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    if (position == 1 ) {
+                        colorAnimation.setCurrentFraction(positionOffset)
+                        val color: Int = Color.parseColor(String.format("#%06X", 0xFFFFFF and colorAnimation.animatedValue as Int))
+                        container.setBackgroundColor(color)
+                        Log.i("t-race", "color: $color")
+                    } else if (position == 0) {
+                        colorAnimation.setCurrentFraction(1 - positionOffset)
+                        val color: Int = Color.parseColor(String.format("#%06X", 0xFFFFFF and colorAnimation.animatedValue as Int))
+                        container.setBackgroundColor(color)
+                    }
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onPageSelected(position: Int) {}
+        })
+
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
-        tabs.addOnTabSelectedListener(TabSelectionListener(this))
+        tabs.addOnTabSelectedListener(TabSelectionListener())
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -81,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private inner class TabSelectionListener(val ctx: Context) : TabLayout.OnTabSelectedListener {
+    private inner class TabSelectionListener : TabLayout.OnTabSelectedListener {
 
         override fun onTabSelected(tab: TabLayout.Tab?) {
             fab.rotation = 0f

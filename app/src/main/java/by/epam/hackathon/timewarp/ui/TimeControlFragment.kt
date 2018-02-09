@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fr_time_control.*
 import java.util.*
 
 class TimeControlFragment:Fragment() {
-    lateinit var receiverMin: BroadcastReceiver
+    private lateinit var receiverMin: BroadcastReceiver
 
     companion object {
         fun newInstance(): TimeControlFragment {
@@ -32,14 +32,15 @@ class TimeControlFragment:Fragment() {
                 drawCurrentTime(true)
             }
         }
+
+
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         drawCurrentTime(false)
         registerMinReceiver()
-
     }
 
     override fun onPause() {

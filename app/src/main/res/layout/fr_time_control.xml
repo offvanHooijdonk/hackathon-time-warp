@@ -9,8 +9,8 @@
         android:layout_width="@dimen/analog_clock_size"
         android:layout_height="@dimen/analog_clock_size"
         android:layout_centerInParent="true"
-        app:clockColor="@color/md_blue_grey_400"
-        app:frameWidth="regular"
-        app:pointerWidth="regular" />
+        app:clockColor="@color/md_white_1000"
+        app:frameWidth="bold"
+        app:pointerWidth="bold" />
 
 </RelativeLayout>
