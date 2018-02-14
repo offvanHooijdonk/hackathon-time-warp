@@ -9,4 +9,6 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="fish_time_passed">1:45</string>
+    <string name="fish_balance">50%</string>
 </resources>
