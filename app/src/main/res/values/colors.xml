@@ -5,7 +5,7 @@
     <color name="colorAccent">@color/md_red_A200</color>-->
     <color name="colorPrimary">#D11439</color>
     <color name="colorPrimaryDark">@color/md_red_900</color>
-    <color name="colorAccent">@color/md_teal_A700</color>
+    <color name="colorAccent">@color/md_blue_A200</color>
     <color name="transparent">#00000000</color>
 
     <color name="tabs_back">@color/md_red_900</color>

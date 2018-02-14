@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,43 +8,31 @@
         android:id="@+id/clock"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="108dp"
         android:layout_marginEnd="@dimen/clock_margin_h"
         android:layout_marginStart="@dimen/clock_margin_h"
+        android:layout_marginTop="36dp"
         app:clockColor="@color/md_white_1000"
         app:frameWidth="bold"
-        app:layout_constraintBottom_toTopOf="@+id/txtBalanceWork"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtChipTimePassed"
         app:pointerWidth="bold" />
-
-    <TextView
-        android:id="@+id/txtTimePassed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/shape_chip"
-        android:text="@string/fish_time_passed"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@id/txtBalanceWork"
-        app:layout_constraintEnd_toEndOf="@id/glTimeElapsed"
-        app:layout_constraintStart_toStartOf="@id/glTimeElapsed" />
 
     <TextView
         android:id="@+id/txtBalanceWork"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_weight="64"
-        android:background="@color/colorAccent"
+        android:background="@color/md_cyan_A700"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:text="@string/fish_balance"
         android:textAlignment="center"
         android:textColor="@color/md_white_1000"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/glBalance"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -58,22 +45,34 @@
         android:text="@string/fish_balance"
         android:textAlignment="center"
         android:textColor="@color/md_white_1000"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/txtBalanceWork"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/glBalance" />
+
+    <TextView
+        android:id="@+id/txtChipTimePassed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_chip"
+        android:text="@string/fish_time_passed"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/txtBalanceWork"
+        app:layout_constraintEnd_toEndOf="@id/glTimeElapsed"
+        app:layout_constraintStart_toStartOf="@id/glTimeElapsed" />
 
     <android.support.constraint.Guideline
         android:id="@+id/glBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.65" />
 
     <android.support.constraint.Guideline
         android:id="@+id/glTimeElapsed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.65" />
 
 </android.support.constraint.ConstraintLayout>
