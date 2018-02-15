@@ -3,12 +3,18 @@
     <!--<color name="colorPrimary">@color/md_teal_500</color>
     <color name="colorPrimaryDark">@color/md_teal_700</color>
     <color name="colorAccent">@color/md_red_A200</color>-->
-    <color name="colorPrimary">#D11439</color>
+    <!--<color name="colorPrimary">#D11439</color>
+    <color name="colorPrimaryDark">@color/md_red_900</color>
+    <color name="colorAccent">@color/md_blue_A200</color>-->
+    <color name="colorPrimary">@color/md_red_700</color>
     <color name="colorPrimaryDark">@color/md_red_900</color>
     <color name="colorAccent">@color/md_blue_A200</color>
     <color name="transparent">#00000000</color>
+    <color name="clock">@color/md_red_700</color>
+    <color name="chip_back">@color/md_red_700</color>
+    <color name="chip_text">@color/md_white_1000</color>
 
-    <color name="tabs_back">@color/md_red_900</color>
+    <color name="tabs_back">@color/md_red_700</color>
     <color name="clock_background">#D11439</color>
     <color name="nav_bottom_selected">@color/md_white_1000</color>
     <color name="nav_bottom_normal">#99FFFFFF</color>

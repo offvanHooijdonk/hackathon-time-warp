@@ -12,4 +12,12 @@
     <string name="fish_time_passed">1:45</string>
     <string name="fish_balance">50%</string>
     <string name="perCentTemplate">%1$d%%</string>
+    
+    <string-array name="fish_tasks_list">
+        <item>Jira-4326 Add column</item>
+        <item>Jira-769 Bug missing element inside e-mail</item>
+        <item>Activity - Making specification</item>
+        <item>Activity - Communication with someone</item>
+        <item>Installing workspace</item>
+    </string-array>
 </resources>

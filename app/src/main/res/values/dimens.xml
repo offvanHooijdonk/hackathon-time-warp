@@ -7,4 +7,6 @@
     <dimen name="analog_clock_size">260dp</dimen>
     <dimen name="fab_margin_above_tabs">64dp</dimen>
     <dimen name="clock_margin_h">56dp</dimen>
+    <dimen name="balance_tab_height_min">24dp</dimen>
+    <dimen name="balance_tab_height">56dp</dimen>
 </resources>

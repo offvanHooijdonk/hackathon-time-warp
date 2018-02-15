@@ -1,53 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
+
+    <Spinner
+        android:id="@+id/spinnerTasks"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="80dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="24dp"
+        android:entries="@array/fish_tasks_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/blockTimeWork" />
 
     <rm.com.clocks.ClockImageView
         android:id="@+id/clock"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="108dp"
         android:layout_marginEnd="@dimen/clock_margin_h"
         android:layout_marginStart="@dimen/clock_margin_h"
         android:layout_marginTop="36dp"
-        app:clockColor="@color/md_white_1000"
+        app:clockColor="@color/colorPrimary"
         app:frameWidth="bold"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtChipTimePassed"
+        app:layout_constraintTop_toBottomOf="@id/spinnerTasks"
         app:pointerWidth="bold" />
 
-    <TextView
-        android:id="@+id/txtBalanceWork"
+    <FrameLayout
+        android:id="@+id/blockTimeWork"
         android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_weight="64"
+        android:layout_height="@dimen/balance_tab_height_min"
         android:background="@color/md_cyan_A700"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:text="@string/fish_balance"
-        android:textAlignment="center"
-        android:textColor="@color/md_white_1000"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/glBalance"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/txtBalanceRest"
+        <TextView
+            android:id="@+id/txtBalanceWork"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/fish_balance"
+            android:textColor="@color/md_white_1000"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/blockTimeRest"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/balance_tab_height_min"
         android:background="@color/md_blue_grey_300"
-        android:gravity="center_vertical"
-        android:text="@string/fish_balance"
-        android:textAlignment="center"
-        android:textColor="@color/md_white_1000"
-        app:layout_constraintTop_toTopOf="@id/txtBalanceWork"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/glBalance" />
+        app:layout_constraintStart_toStartOf="@id/glBalance"
+        app:layout_constraintTop_toTopOf="@id/blockTimeWork">
+
+        <TextView
+            android:id="@+id/txtBalanceRest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/fish_balance"
+            android:textColor="@color/md_white_1000"
+            android:visibility="gone" />
+    </FrameLayout>
+
 
     <TextView
         android:id="@+id/txtChipTimePassed"
@@ -56,10 +82,12 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_chip"
         android:text="@string/fish_time_passed"
+        android:textColor="@color/chip_text"
         android:textSize="13sp"
-        app:layout_constraintTop_toBottomOf="@id/txtBalanceWork"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/glTimeElapsed"
-        app:layout_constraintStart_toStartOf="@id/glTimeElapsed" />
+        app:layout_constraintStart_toStartOf="@id/glTimeElapsed"
+        app:layout_constraintTop_toBottomOf="@id/blockTimeWork" />
 
     <android.support.constraint.Guideline
         android:id="@+id/glBalance"
@@ -74,5 +102,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.65" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/glCenterVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </android.support.constraint.ConstraintLayout>

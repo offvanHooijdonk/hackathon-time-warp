@@ -1,29 +1,28 @@
 package by.epam.hackathon.timewarp.ui
 
-import android.animation.ArgbEvaluator
 import android.animation.LayoutTransition
-import android.animation.ValueAnimator
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
+import android.util.SparseArray
 import android.view.*
 import by.epam.hackathon.timewarp.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 
+
+
 class MainActivity : AppCompatActivity() {
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private var registeredFragments = SparseArray<Fragment>()
 
     companion object {
         const val TAB_INDEX_LIST = 0
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         mainContent.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
-        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), this.resources.getColor(R.color.clock_background), 0xFFFFFF) // TODO move to a method
+        /*val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), this.resources.getColor(R.color.clock_background), 0xFFFFFF) // TODO move to a method
         container.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 //Log.i("t-race", "position: $position, offset: $positionOffset, offsetPx: $positionOffsetPixels")
@@ -61,16 +60,18 @@ class MainActivity : AppCompatActivity() {
 
             override fun onPageScrollStateChanged(state: Int) {}
             override fun onPageSelected(position: Int) {}
-        })
+        })*/
 
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
 
         tabs.addOnTabSelectedListener(TabSelectionListener())
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        fab.setOnClickListener {
+            val fragment: Fragment? = registeredFragments.get(container.currentItem)
+            if (fragment is FABClickListener) {
+                (fragment as FABClickListener).onFabClicked(fab)
+            }
         }
 
     }
@@ -94,8 +95,7 @@ class MainActivity : AppCompatActivity() {
     inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
-
-            return when (position) {
+            val fr: Fragment = when (position) {
                 TAB_INDEX_TIME_CONTROL -> {
                     TimeControlFragment.newInstance()
                 }
@@ -103,10 +103,19 @@ class MainActivity : AppCompatActivity() {
                     PlaceholderFragment.newInstance(position + 1)
                 }
             }
+            registeredFragments.put(position, fr)
+
+            return fr
         }
 
         override fun getCount(): Int {
             return tabs.tabCount
+        }
+
+        override fun destroyItem(container: ViewGroup?, position: Int, `object`: Any?) {
+            super.destroyItem(container, position, `object`)
+
+            registeredFragments.remove(position)
         }
     }
 
@@ -117,17 +126,13 @@ class MainActivity : AppCompatActivity() {
             //val direction = tab!!.position - prevPosition
             when (tab!!.position) {
                 TAB_INDEX_TIME_CONTROL -> {
-                    //rotateButton(R.drawable.ic_play_24, direction)
-                    //fab.setImageResource(R.drawable.ic_play_24)
-                    move(true,R.drawable.ic_play_24)
+                    move(true, R.drawable.ic_play_24)
                 }
                 TAB_INDEX_LIST -> {
-                    //rotateButton(R.drawable.ic_add_24, direction)
                     move(false, R.drawable.ic_add_24)
                 }
                 TAB_INDEX_REPORT -> {
-                    //rotateButton(R.drawable.ic_cloud_upload_24, direction)
-                    move(false,R.drawable.ic_cloud_upload_24)
+                    move(false, R.drawable.ic_cloud_upload_24)
                 }
             }
         }
@@ -136,7 +141,7 @@ class MainActivity : AppCompatActivity() {
             val lParams: CoordinatorLayout.LayoutParams = (fab.layoutParams as CoordinatorLayout.LayoutParams)
             lParams.gravity = Gravity.BOTTOM or if (isCenter) Gravity.CENTER_HORIZONTAL else Gravity.END
             fab.layoutParams = lParams
-            Handler().postDelayed({fab.setImageResource(imgNewRes)}, 100)
+            Handler().postDelayed({ fab.setImageResource(imgNewRes) }, 100)
         }
 
         /*private fun rotateButton(imgNewRes: Int, direction: Int) {
@@ -152,7 +157,9 @@ class MainActivity : AppCompatActivity() {
 
         override fun onTabReselected(tab: TabLayout.Tab?) {}
 
-        override fun onTabUnselected(tab: TabLayout.Tab?) {prevPosition = tab!!.position}
+        override fun onTabUnselected(tab: TabLayout.Tab?) {
+            prevPosition = tab!!.position
+        }
     }
 
     @Deprecated("To be removed")
@@ -176,5 +183,9 @@ class MainActivity : AppCompatActivity() {
                 return fragment
             }
         }
+    }
+
+    interface FABClickListener {
+        fun onFabClicked(fab: FloatingActionButton)
     }
 }

@@ -1,6 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <solid android:color="@color/md_white_1000" />
+    <solid android:color="@color/chip_back" />
 
     <padding
         android:bottom="6dp"
