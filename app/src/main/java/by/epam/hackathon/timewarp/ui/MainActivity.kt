@@ -139,8 +139,11 @@ class MainActivity : AppCompatActivity() {
 
         private fun move(isCenter: Boolean, imgNewRes: Int) { // TODO make enum
             val lParams: CoordinatorLayout.LayoutParams = (fab.layoutParams as CoordinatorLayout.LayoutParams)
-            lParams.gravity = Gravity.BOTTOM or if (isCenter) Gravity.CENTER_HORIZONTAL else Gravity.END
+            lParams.gravity = Gravity.BOTTOM or if (isCenter) Gravity.START else Gravity.END
+            val fr: TimeControlFragment = registeredFragments.get(TAB_INDEX_TIME_CONTROL) as TimeControlFragment
+            lParams.marginStart = fr.getStatusViewStartPosition()
             fab.layoutParams = lParams
+
             Handler().postDelayed({ fab.setImageResource(imgNewRes) }, 100)
         }
 

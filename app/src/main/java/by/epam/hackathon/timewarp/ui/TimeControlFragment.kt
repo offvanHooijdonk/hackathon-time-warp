@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.Handler
 import android.support.constraint.ConstraintLayout
@@ -49,9 +50,8 @@ class TimeControlFragment : Fragment(), MainActivity.FABClickListener {
                 drawBalance()
             }
         }
-        /*val rand = Random()
-        elapsedWork = rand.nextInt(6) * 60 + rand.nextInt(60)
-        elapsedRest = rand.nextInt(4) * 60 + rand.nextInt(60)*/
+
+        txtWorkStatus.text = getString(R.string.status_not_started)
         root.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         root.layoutTransition.enableTransitionType(LayoutTransition.APPEARING)
 
@@ -78,17 +78,32 @@ class TimeControlFragment : Fragment(), MainActivity.FABClickListener {
         if (isActive) {
             if (isWorking) {
                 fab.setImageResource(R.drawable.ic_build_24)
+                val colorList: ColorStateList = ColorStateList.valueOf(resources.getColor(R.color.fab_resting))
+                fab.backgroundTintList = colorList
+                txtWorkStatus.text = getString(R.string.status_rest)
+                txtWorkStatus.setTextColor(colorList)
                 isWorking = false
+
             } else {
+                val colorList: ColorStateList = ColorStateList.valueOf(resources.getColor(R.color.fab_working))
                 fab.setImageResource(R.drawable.ic_weekend_24)
+                fab.backgroundTintList = colorList
+                txtWorkStatus.text = getString(R.string.status_working)
+                txtWorkStatus.setTextColor(colorList)
                 isWorking = true
             }
         } else {
+            val colorList: ColorStateList = ColorStateList.valueOf(resources.getColor(R.color.fab_working))
             fab.setImageResource(R.drawable.ic_weekend_24)
+            fab.backgroundTintList = colorList
+            txtWorkStatus.text = getString(R.string.status_working)
+            txtWorkStatus.setTextColor(colorList)
             isActive = true
             isWorking = true
         }
     }
+
+    public fun getStatusViewStartPosition() = blockStatus.left
 
     private fun drawBalance() { // TODO use constants and resources
         val calendar = Calendar.getInstance()

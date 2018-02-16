@@ -12,7 +12,13 @@
     <string name="fish_time_passed">1:45</string>
     <string name="fish_balance">50%</string>
     <string name="perCentTemplate">%1$d%%</string>
-    
+
+    <string name="status_working">working</string>
+    <string name="status_not_started">not started</string>
+    <string name="status_rest">resting</string>
+    <string name="status_paused">paused</string>
+    <string name="status_stopped">day end</string>
+
     <string-array name="fish_tasks_list">
         <item>Jira-4326 Add column</item>
         <item>Jira-769 Bug missing element inside e-mail</item>

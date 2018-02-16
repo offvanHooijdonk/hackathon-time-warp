@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="80dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:entries="@array/fish_tasks_list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,12 +82,42 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_chip"
         android:text="@string/fish_time_passed"
-        android:textColor="@color/chip_text"
+        android:textColor="@color/chip_time_text"
         android:textSize="13sp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/glTimeElapsed"
         app:layout_constraintStart_toStartOf="@id/glTimeElapsed"
         app:layout_constraintTop_toBottomOf="@id/blockTimeWork" />
+
+    <RelativeLayout
+        android:id="@+id/blockStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/shape_chip_status"
+        android:paddingEnd="24dp"
+        android:paddingStart="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/glCenterVertical"
+        app:layout_constraintStart_toStartOf="@id/glCenterVertical">
+
+        <TextView
+            android:id="@+id/txtWorkStatus"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/status_not_started"
+            android:textColor="@color/md_white_1000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtTimeOnTask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtWorkStatus"
+            android:text="22:15"
+            android:textColor="@color/md_white_1000" />
+    </RelativeLayout>
 
     <android.support.constraint.Guideline
         android:id="@+id/glBalance"
