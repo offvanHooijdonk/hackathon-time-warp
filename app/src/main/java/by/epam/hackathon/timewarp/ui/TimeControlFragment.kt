@@ -1,6 +1,7 @@
 package by.epam.hackathon.timewarp.ui
 
 import android.animation.LayoutTransition
+import android.animation.ObjectAnimator
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -22,21 +23,25 @@ import java.util.*
 class TimeControlFragment : Fragment(), MainActivity.FABClickListener {
     companion object {
         const val BALANCE_AUTO_TOGGLE_DELAY = 5000L
+        const val DOUBLE_TAP_DELAY = 500L
 
-        fun newInstance(): TimeControlFragment {
+        fun newInstance(fab: FloatingActionButton): TimeControlFragment {
             val fragment = TimeControlFragment()
+            fragment.fabMain = fab
             return fragment
         }
     }
 
     private lateinit var receiverMin: BroadcastReceiver
 
+    private lateinit var fabMain: FloatingActionButton
     private var elapsedWork: Int = 0
     private var elapsedRest: Int = 0
-    private var isWorking = false
-    private var isActive = false
+    private var workStatus: WorkStatus = WorkStatus.NOT_STARTED
+    private var isPaused = false
     private var isBalanceVisible = false
     private var lastBalanceShowTime: Long = 0
+    private var lastClockClickedTime: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.fr_time_control, container, false)
@@ -44,8 +49,10 @@ class TimeControlFragment : Fragment(), MainActivity.FABClickListener {
     override fun onViewCreated(v: View?, savedInstanceState: Bundle?) {
         receiverMin = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                if (isActive)
-                    if (isWorking) elapsedWork++ else elapsedRest++
+                if (workStatus == WorkStatus.WORKING && !isPaused)
+                    elapsedWork++
+                else if (workStatus == WorkStatus.RESTING)
+                    elapsedRest++
                 drawCurrentTime(true)
                 drawBalance()
             }
@@ -58,6 +65,23 @@ class TimeControlFragment : Fragment(), MainActivity.FABClickListener {
         drawBalance()
         blockTimeWork.setOnClickListener { showAndHideBalanceBar() }
         blockTimeRest.setOnClickListener { showAndHideBalanceBar() }
+
+        clock.setOnClickListener { // TODO move to a method
+            val time: Long = System.currentTimeMillis()
+            if (time - lastClockClickedTime < DOUBLE_TAP_DELAY) {
+                if (workStatus == WorkStatus.WORKING) {
+                    if (isPaused) {
+                        showPauseOverlay(false)
+                        changeStatus(workStatus)
+                    } else {
+                        showPauseOverlay(true)
+                        setupStatusBar(fabMain, R.drawable.ic_play_24, R.color.fab_paused, R.color.status_text_paused, R.string.status_paused)
+                    }
+                    isPaused = !isPaused
+                }
+            }
+            lastClockClickedTime = time
+        }
 
         registerMinReceiver()
     }
@@ -74,36 +98,60 @@ class TimeControlFragment : Fragment(), MainActivity.FABClickListener {
         unregisterMinReceiver()
     }
 
-    override fun onFabClicked(fab: FloatingActionButton) {
-        if (isActive) {
-            if (isWorking) {
-                fab.setImageResource(R.drawable.ic_build_24)
-                val colorList: ColorStateList = ColorStateList.valueOf(resources.getColor(R.color.fab_resting))
-                fab.backgroundTintList = colorList
-                txtWorkStatus.text = getString(R.string.status_rest)
-                txtWorkStatus.setTextColor(colorList)
-                isWorking = false
-
+    override fun onFabClicked() {
+        workStatus = if (!isPaused) {
+            if (workStatus == WorkStatus.WORKING) {
+                WorkStatus.RESTING
             } else {
-                val colorList: ColorStateList = ColorStateList.valueOf(resources.getColor(R.color.fab_working))
-                fab.setImageResource(R.drawable.ic_weekend_24)
-                fab.backgroundTintList = colorList
-                txtWorkStatus.text = getString(R.string.status_working)
-                txtWorkStatus.setTextColor(colorList)
-                isWorking = true
+                WorkStatus.WORKING
             }
         } else {
-            val colorList: ColorStateList = ColorStateList.valueOf(resources.getColor(R.color.fab_working))
-            fab.setImageResource(R.drawable.ic_weekend_24)
-            fab.backgroundTintList = colorList
-            txtWorkStatus.text = getString(R.string.status_working)
-            txtWorkStatus.setTextColor(colorList)
-            isActive = true
-            isWorking = true
+            showPauseOverlay(false)
+            isPaused = false
+            workStatus
         }
+
+        changeStatus(workStatus)
     }
 
-    public fun getStatusViewStartPosition() = blockStatus.left
+    fun getStatusViewStartPosition() = blockStatus.left
+
+    private fun changeStatus(newStatus: WorkStatus) {
+        val iconRes: Int
+        val fabColorRes: Int
+        val textColorRes: Int
+        val statusTextRes: Int
+
+        when (newStatus) {
+            WorkStatus.RESTING -> {
+                iconRes = R.drawable.ic_build_24
+                fabColorRes = R.color.fab_resting
+                textColorRes = R.color.status_text_resting
+                statusTextRes = R.string.status_rest
+            }
+            WorkStatus.WORKING -> {
+                iconRes = R.drawable.ic_weekend_24
+                fabColorRes = R.color.fab_working
+                textColorRes = R.color.status_text_working
+                statusTextRes = R.string.status_working
+            }
+            WorkStatus.NOT_STARTED, WorkStatus.FINISHED -> {
+                iconRes = R.drawable.ic_weekend_24
+                fabColorRes = R.color.fab_working
+                textColorRes = R.color.status_text_working
+                statusTextRes = R.string.status_working
+            }
+        }
+
+        setupStatusBar(fabMain, iconRes, fabColorRes, textColorRes, statusTextRes)
+    }
+
+    private fun setupStatusBar(fab: FloatingActionButton, iconRes: Int, fabColorRes: Int, textColorRes: Int, statusTextRes: Int) {
+        fab.setImageResource(iconRes)
+        fab.backgroundTintList = ColorStateList.valueOf(resources.getColor(fabColorRes))
+        txtWorkStatus.text = getString(statusTextRes)
+        txtWorkStatus.setTextColor(resources.getColor(textColorRes))
+    }
 
     private fun drawBalance() { // TODO use constants and resources
         val calendar = Calendar.getInstance()
@@ -133,6 +181,18 @@ class TimeControlFragment : Fragment(), MainActivity.FABClickListener {
         }
 
         (glTimeElapsed.layoutParams as ConstraintLayout.LayoutParams).guidePercent = balanceTime
+    }
+
+    private fun showPauseOverlay(isShow: Boolean) {
+        if (isShow){
+            ObjectAnimator.ofFloat(clock, View.ALPHA, 1.0f, 0.5f).setDuration(300).start()
+            ObjectAnimator.ofFloat(imgPlay, View.ALPHA, 0.0f, 0.5f).setDuration(300).start()
+            //imgPlay.visibility = View.VISIBLE
+        } else {
+            ObjectAnimator.ofFloat(clock, View.ALPHA, 0.5f, 1.0f).setDuration(300).start()
+            ObjectAnimator.ofFloat(imgPlay, View.ALPHA, 0.5f, 0.0f).setDuration(300).start()
+            //imgPlay.visibility = View.GONE
+        }
     }
 
     private fun toPerCentString(number: Float) = getString(R.string.perCentTemplate, Math.round(100 * number))
@@ -192,6 +252,10 @@ class TimeControlFragment : Fragment(), MainActivity.FABClickListener {
         lParamsWork.height = height
         view.layoutParams = lParamsWork
 
+    }
+
+    private enum class WorkStatus {
+        NOT_STARTED, WORKING, RESTING, FINISHED
     }
 
 }

@@ -4,7 +4,6 @@ import android.animation.LayoutTransition
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             val fragment: Fragment? = registeredFragments.get(container.currentItem)
             if (fragment is FABClickListener) {
-                (fragment as FABClickListener).onFabClicked(fab)
+                (fragment as FABClickListener).onFabClicked()
             }
         }
 
@@ -97,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             val fr: Fragment = when (position) {
                 TAB_INDEX_TIME_CONTROL -> {
-                    TimeControlFragment.newInstance()
+                    TimeControlFragment.newInstance(fab)
                 }
                 else -> {
                     PlaceholderFragment.newInstance(position + 1)
@@ -189,6 +188,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     interface FABClickListener {
-        fun onFabClicked(fab: FloatingActionButton)
+        fun onFabClicked()
     }
 }
