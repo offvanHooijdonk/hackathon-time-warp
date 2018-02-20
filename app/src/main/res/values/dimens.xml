@@ -9,4 +9,5 @@
     <dimen name="clock_margin_h">56dp</dimen>
     <dimen name="balance_tab_height_min">32dp</dimen>
     <dimen name="balance_tab_height">56dp</dimen>
+    <dimen name="task_icon_size">24dp</dimen>
 </resources>

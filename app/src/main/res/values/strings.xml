@@ -18,6 +18,7 @@
     <string name="status_rest">resting</string>
     <string name="status_paused">paused</string>
     <string name="status_stopped">day end</string>
+    <string name="fish_task">JIRA-732: Task Title here</string>
 
     <string-array name="fish_tasks_list">
         <item>Jira-4326 Add column</item>

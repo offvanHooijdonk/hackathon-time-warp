@@ -98,6 +98,9 @@ class MainActivity : AppCompatActivity() {
                 TAB_INDEX_TIME_CONTROL -> {
                     TimeControlFragment.newInstance(fab)
                 }
+                TAB_INDEX_LIST -> {
+                    TasksFragment.getInstance()
+                }
                 else -> {
                     PlaceholderFragment.newInstance(position + 1)
                 }
