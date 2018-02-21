@@ -1,4 +1,4 @@
-package by.epam.hackathon.timewarp.ui
+package by.epam.hackathon.timewarp.ui.timecontrol
 
 import android.animation.LayoutTransition
 import android.animation.ObjectAnimator
@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import by.epam.hackathon.timewarp.R
+import by.epam.hackathon.timewarp.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fr_time_control.*
 import java.util.*
 

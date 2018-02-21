@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:fitsSystemWindows="true"
-    tools:context="by.epam.hackathon.timewarp.ui.MainActivity">
+    tools:context="by.epam.hackathon.timewarp.ui.main.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

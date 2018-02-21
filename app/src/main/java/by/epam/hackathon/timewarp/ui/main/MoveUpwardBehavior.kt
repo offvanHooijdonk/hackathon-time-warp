@@ -1,4 +1,4 @@
-package by.epam.hackathon.timewarp.ui
+package by.epam.hackathon.timewarp.ui.main
 
 import android.content.Context
 import android.support.design.widget.CoordinatorLayout

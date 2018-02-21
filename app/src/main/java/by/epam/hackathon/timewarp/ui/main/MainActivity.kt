@@ -1,4 +1,4 @@
-package by.epam.hackathon.timewarp.ui
+package by.epam.hackathon.timewarp.ui.main
 
 import android.animation.LayoutTransition
 import android.os.Bundle
@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity
 import android.util.SparseArray
 import android.view.*
 import by.epam.hackathon.timewarp.R
+import by.epam.hackathon.timewarp.ui.tasklist.TasksFragment
+import by.epam.hackathon.timewarp.ui.timecontrol.TimeControlFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 

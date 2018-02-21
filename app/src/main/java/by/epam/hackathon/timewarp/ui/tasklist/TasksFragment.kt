@@ -1,4 +1,4 @@
-package by.epam.hackathon.timewarp.ui
+package by.epam.hackathon.timewarp.ui.tasklist
 
 
 import android.os.Bundle
