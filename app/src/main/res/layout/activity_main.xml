@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/tabs_back"
-        app:layout_behavior="by.epam.hackathon.timewarp.ui.MoveUpwardBehavior"
+        app:layout_behavior="by.epam.hackathon.timewarp.ui.main.MoveUpwardBehavior"
         app:tabIndicatorColor="@color/md_white_1000"
         app:tabSelectedTextColor="@color/nav_bottom_selected"
         app:tabTextColor="@color/nav_bottom_normal">
